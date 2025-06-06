@@ -1,0 +1,35 @@
+image=kep3.jpg;title=Skyburn;rating=G;genre=Thriller;duration=105;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-06
+image=kep5.jpg;title=Dreamline;rating=PG;genre=Drama;duration=85;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-06
+image=kep5.jpg;title=Midnight Echo;rating=PG;genre=Drama;duration=140;format=2D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-06
+image=kep5.jpg;title=The AI Conspiracy;rating=PG;genre=Action;duration=100;format=2D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-06
+image=kep5.jpg;title=The AI Conspiracy;rating=PG;genre=Drama;duration=145;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-06
+image=kep4.jpg;title=The AI Conspiracy;rating=PG;genre=Animation;duration=105;format=2D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-07
+image=kep4.jpg;title=HoloHeist;rating=R;genre=Animation;duration=100;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-07
+image=kep3.jpg;title=Skyburn;rating=PG;genre=Drama;duration=130;format=2D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-07
+image=kep4.jpg;title=ChronoFall;rating=R;genre=Sci-Fi;duration=140;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-07
+image=kep5.jpg;title=The AI Conspiracy;rating=PG-13;genre=Action;duration=150;format=3D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-07
+image=kep4.jpg;title=HoloHeist;rating=PG;genre=Drama;duration=130;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-08
+image=kep3.jpg;title=Galactic Reboot;rating=PG;genre=Action;duration=120;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-08
+image=kep3.jpg;title=The Last Synth;rating=G;genre=Animation;duration=130;format=3D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-08
+image=kep4.jpg;title=Midnight Echo;rating=G;genre=Drama;duration=140;format=2D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-08
+image=kep4.jpg;title=Galactic Reboot;rating=G;genre=Sci-Fi;duration=135;format=2D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-08
+image=kep5.jpg;title=Midnight Echo;rating=G;genre=Thriller;duration=85;format=2D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-09
+image=kep4.jpg;title=Quantum Drift;rating=G;genre=Action;duration=140;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-09
+image=kep5.jpg;title=Galactic Reboot;rating=PG;genre=Drama;duration=115;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-09
+image=kep3.jpg;title=Dreamline;rating=R;genre=Drama;duration=85;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-09
+image=kep3.jpg;title=Quantum Drift;rating=R;genre=Action;duration=85;format=2D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-09
+image=kep3.jpg;title=The AI Conspiracy;rating=PG-13;genre=Drama;duration=95;format=2D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-10
+image=kep4.jpg;title=ChronoFall;rating=PG-13;genre=Sci-Fi;duration=110;format=3D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-10
+image=kep4.jpg;title=HoloHeist;rating=PG-13;genre=Animation;duration=145;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-10
+image=kep3.jpg;title=Midnight Echo;rating=PG-13;genre=Drama;duration=130;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-10
+image=kep4.jpg;title=Quantum Drift;rating=PG;genre=Drama;duration=110;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-10
+image=kep3.jpg;title=The Last Synth;rating=PG;genre=Sci-Fi;duration=120;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-11
+image=kep5.jpg;title=The Last Synth;rating=PG;genre=Animation;duration=100;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-11
+image=kep5.jpg;title=Neon Pulse;rating=G;genre=Drama;duration=115;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-11
+image=kep5.jpg;title=Skyburn;rating=PG-13;genre=Drama;duration=100;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-11
+image=kep4.jpg;title=Neon Pulse;rating=G;genre=Action;duration=85;format=3D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-11
+image=kep5.jpg;title=Midnight Echo;rating=R;genre=Action;duration=120;format=3D;showtimes=11:00,13:30,16:00,18:30,21:00;day=2025-04-12
+image=kep5.jpg;title=Midnight Echo;rating=G;genre=Animation;duration=140;format=2D;showtimes=10:00,12:30,15:00,17:30,20:00;day=2025-04-12
+image=kep4.jpg;title=Neon Pulse;rating=G;genre=Sci-Fi;duration=105;format=3D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-12
+image=kep3.jpg;title=HoloHeist;rating=PG-13;genre=Action;duration=150;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-12
+image=kep3.jpg;title=Dreamline;rating=PG;genre=Sci-Fi;duration=95;format=2D;showtimes=09:45,13:00,16:15,19:30;day=2025-04-12git 
