@@ -1,8 +1,8 @@
+# rowgrid.py (főprogram)
+
 from customtkinter import *
-from customtkinter import CTkImage
-from PIL import Image
-from tkinter import Frame, Label
 from PIL import Image, ImageTk
+from tkinter import Frame, Label
 from tkinter.ttk import Combobox
 import os
 import subprocess
@@ -16,8 +16,6 @@ SecondaryColor = "#2C2C3C"
 TertiaryColor = "#3C3C4F"
 QuaternaryColor = "#E0E0E0"
 QuinaryColor = "#00FFF5"
-
-temp_data.clear_data()  
 
 class MovieCard(CTkFrame):
     def __init__(self, master, data, **kwargs):
@@ -61,10 +59,11 @@ class MovieCard(CTkFrame):
             "duration": self.data['duration'],
             "terem_szam": 1
         }
+        import temp_data
         temp_data.save_data({"selected_movie": selected_movie})
+        # Indítjuk a helyfoglaló ablakot
         subprocess.Popen([sys.executable, "ulohelyek.py"])
         self.winfo_toplevel().destroy()
-
 
 class MovieDisplay(CTkFrame):
     def __init__(self, master, movie_file, **kwargs):
@@ -115,7 +114,6 @@ class MovieDisplay(CTkFrame):
         for i, movie in enumerate(filtered):
             card = MovieCard(self.scrollable, movie)
             card.pack(padx=10, pady=10, fill="x")
-
 
 class FilmAblak:
     def __init__(self, cim):
