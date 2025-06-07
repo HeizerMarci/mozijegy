@@ -1,71 +1,35 @@
-# jegy_foglalo.py
-import customtkinter as ctk
 import temp_data
-import jegy_keszito
-from tkinter import messagebox
+from fpdf import FPDF
+import os
 
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("blue")
+def jegy_keszites():
+    data = temp_data.load_data()
+    movie = data.get("selected_movie", {})
+    if not movie:
+        print("Nincs foglalás adat!")
+        return
 
-class JegyfoglaloApp(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title("Jegyfoglaló rendszer")
-        self.geometry("600x400")
-        
-        self.data = temp_data.load_data()
-        
-        # Foglalások listája
-        self.listbox = ctk.CTkListbox(self, width=400, height=200)
-        self.listbox.pack(pady=20)
-        
-        self.load_foglalasok()
-        
-        # Gombok
-        self.btn_jegy = ctk.CTkButton(self, text="Jegy generálás", command=self.jegy_generalas)
-        self.btn_jegy.pack(pady=10)
-        
-        self.btn_torles = ctk.CTkButton(self, text="Foglalás törlése", command=self.foglalas_torles)
-        self.btn_torles.pack(pady=10)
-        
-    def load_foglalasok(self):
-        self.listbox.delete(0, 'end')
-        data = self.data
-        if not data or "selected_movie" not in data:
-            self.listbox.insert('end', "Nincs foglalás.")
-            return
-        
-        movie = data["selected_movie"]
-        seats = movie.get("seats", [])
-        for i, seat in enumerate(seats):
-            self.listbox.insert('end', f"{i+1}. sor {seat[0]+1}, szék {seat[1]+1}")
-    
-    def jegy_generalas(self):
-        if not self.data:
-            messagebox.showinfo("Info", "Nincs foglalás, amihez jegyet készíthetne.")
-            return
-        jegy_keszito.jegy()
-    
-    def foglalas_torles(self):
-        selected_index = self.listbox.curselection()
-        if not selected_index:
-            messagebox.showwarning("Figyelem", "Válassz ki egy foglalást a törléshez!")
-            return
-        
-        seat_index = selected_index[0]
-        
-        movie = self.data.get("selected_movie", {})
-        seats = movie.get("seats", [])
-        
-        if 0 <= seat_index < len(seats):
-            del seats[seat_index]
-            temp_data.save_data(self.data)
-            self.load_foglalasok()
-            messagebox.showinfo("Siker", "Foglalás törölve.")
-        else:
-            messagebox.showerror("Hiba", "Érvénytelen foglalás kiválasztva.")
-        
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 24)
+    pdf.cell(0, 20, "ZSOMA Cinema", ln=True, align="C")
+    pdf.ln(10)
+    pdf.set_font("Arial", size=18)
+    pdf.cell(0, 15, f"Film: {movie.get('title', 'N/A')}", ln=True)
+    pdf.cell(0, 15, f"Napon: {movie.get('day', 'N/A')}", ln=True)
+    pdf.cell(0, 15, f"Időpont: {movie.get('time', 'N/A')}", ln=True)
+    pdf.cell(0, 15, f"Terem: {movie.get('terem_szam', 'N/A')}", ln=True)
+
+    # Ha van helyfoglalás rész, azokat is hozzá lehet adni
+    foglalasok = data.get("foglalasok", [])
+    if foglalasok:
+        pdf.cell(0, 15, "Helyek:", ln=True)
+        for hely in foglalasok:
+            pdf.cell(0, 12, f"  {hely}", ln=True)
+
+    save_path = os.path.join(os.getcwd(), "jegy.pdf")
+    pdf.output(save_path)
+    print(f"Jegy elkészült és elmentve ide: {save_path}")
 
 if __name__ == "__main__":
-    app = JegyfoglaloApp()
-    app.mainloop()
+    jegy_keszites()
