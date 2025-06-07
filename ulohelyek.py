@@ -4,9 +4,7 @@ from customtkinter import *
 from tkinter import messagebox
 import subprocess
 import sys
-import os
 import hashlib
-
 
 set_appearance_mode("dark")
 
@@ -15,7 +13,6 @@ SecondaryColor = "#2C2C3C"
 TertiaryColor = "#3C3C4F"
 QuaternaryColor = "#E0E0E0"
 QuinaryColor = "#00FFF5"
-
 
 root = CTk()
 root.title("Szék kiválasztása")
@@ -26,7 +23,6 @@ root.resizable(False, False)
 buttons = []
 selected = []
 
-
 data = temp_data.load_data()
 movie = data["selected_movie"]
 
@@ -35,7 +31,6 @@ def stable_id(text):
 
 film_id = stable_id(movie["title"] + movie["day"])
 terem_szam = movie["terem_szam"]
-
 
 conn = sqlite3.connect("mozi.db")
 c = conn.cursor()
@@ -46,77 +41,59 @@ print("[DEBUG] DB CONTENTS:")
 for row in all_rows:
     print(f"  FILM_ID={row[0]}, SOR={row[1]}, OSZLOP={row[2]}, TEREM={row[3]}")
 
-c.execute("SELECT sor, oszlop FROM terem WHERE film_id=? AND terem_szam=?", (film_id, terem_szam))
-reserved_seats_raw = c.fetchall()
-reserved_seats = {(int(sor), int(oszlop)) for sor, oszlop in reserved_seats_raw}
-print("[DEBUG] RESERVED SEATS:", reserved_seats_raw)
+c.execute("SELECT szerelonev, oradij FROM szerelo")
+szerelok = c.fetchall()
 
-conn.close()
+c.execute("SELECT * FROM terem WHERE film_id=? AND terem_szam=?", (film_id, terem_szam))
+foglalasok = c.fetchall()
 
-# === Székek kezelése ===
-def toggle(i, j):
-    if (i, j) in selected:
-        selected.remove((i, j))
-        buttons[i][j].configure(fg_color=TertiaryColor, text_color="white")
+def toggle_button(btn):
+    if btn in selected:
+        selected.remove(btn)
+        btn.configure(fg_color=SecondaryColor)
     else:
-        selected.append((i, j))
-        buttons[i][j].configure(fg_color="#70FF99", text_color="black")
+        selected.append(btn)
+        btn.configure(fg_color=QuinaryColor)
 
-# === Székek rácsba rendezése ===
-frame = CTkFrame(root, fg_color=SecondaryColor)
-frame.pack(pady=20)
+def foglalas_mentese():
+    for btn in selected:
+        hely = btn.cget("text")
+        sor = hely[0]
+        oszlop = int(hely[1:])
+        c.execute("INSERT INTO foglalasok (film_id, sor, oszlop, terem_szam) VALUES (?, ?, ?, ?)",
+                  (film_id, sor, oszlop, terem_szam))
+    conn.commit()
+    messagebox.showinfo("Siker", "Helyfoglalás mentve!")
 
-for i in range(5):
-    row = []
-    for j in range(8):
-        seat_pos = (i, j)
-        if seat_pos in reserved_seats:
-            btn = CTkButton(frame, text=f"{i+1},{j+1}", width=60, height=40,
-                            fg_color="red", text_color="white", state=DISABLED, corner_radius=8)
-        else:
-            btn = CTkButton(frame, text=f"{i+1},{j+1}", width=60, height=40,
-                            fg_color=TertiaryColor, text_color="white", corner_radius=8,
-                            command=lambda i=i, j=j: toggle(i, j))
-        btn.grid(row=i, column=j, padx=5, pady=5)
-        row.append(btn)
-    buttons.append(row)
+    # Itt indítjuk a jegy generálót
+    subprocess.Popen([sys.executable, "jegy_foglalo.py"])
 
-# === Mentés gomb ===
-def mentes():
-    if not selected:
-        messagebox.showerror("Hiba", "Legalább egy széket ki kell választani!")
-        return
+    root.destroy()
 
-    try:
-        conn = sqlite3.connect("mozi.db")
-        c = conn.cursor()
+def init_buttons():
+    for i in range(1, 8):
+        for j in range(1, 10):
+            hely = f"{chr(64+i)}{j}"
+            btn = CTkButton(root, text=hely, width=40, height=40, fg_color=SecondaryColor,
+                            hover_color=QuinaryColor, corner_radius=5, command=lambda b=btn: toggle_button(b))
+            btn.grid(row=i, column=j, padx=5, pady=5)
+            buttons.append(btn)
 
-        for seat in selected:
-            sor, oszlop = seat
-            c.execute("SELECT * FROM terem WHERE film_id=? AND sor=? AND oszlop=?", (film_id, sor, oszlop))
-            if c.fetchone():
-                messagebox.showwarning("Foglalás", f"A(z) {sor+1}. sor {oszlop+1}. szék már foglalt!")
-                continue
+    # Foglalt helyek jelzése pirossal (példa)
+    for foglalt in foglalasok:
+        sor_foglalt = foglalt[1]
+        oszlop_foglalt = foglalt[2]
+        hely_foglalt = f"{sor_foglalt}{oszlop_foglalt}"
+        # Meg kell alakítani, hogy megfeleljen az aktuális betű+szám formátumnak, pl. 'A1'
+        hely_foglalt = f"{sor_foglalt}{oszlop_foglalt}"
+        for btn in buttons:
+            if btn.cget("text") == hely_foglalt:
+                btn.configure(fg_color="#ff4d4d", state="disabled")
 
-            c.execute("INSERT INTO terem (film_id, sor, oszlop, terem_szam) VALUES (?, ?, ?, ?)",
-                      (film_id, sor, oszlop, terem_szam))
+init_buttons()
 
-        conn.commit()
-        conn.close()
-
-        data["selected_movie"]["seats"] = selected
-        temp_data.save_data(data)
-
-        print("[INFO] Seats successfully saved and written to temp_data.json.")
-        root.destroy()
-        subprocess.Popen([sys.executable, "adat_beolvasas.py"])
-
-    except Exception as e:
-        print("[ERROR] Failed to save seats:", e)
-        messagebox.showerror("Adatbázis hiba", f"Hiba a mentés során: {e}")
-
-CTkButton(root, text="Foglalás mentése", command=mentes,
-          fg_color=QuinaryColor, hover_color="#00D9C0", text_color="black",
-          font=("Orbitron", 14), corner_radius=20, height=45, width=300).pack(pady=15)
+mentes_btn = CTkButton(root, text="Foglalás Mentése", fg_color=QuinaryColor, hover_color="#00D9C0",
+                       text_color="black", font=("Orbitron", 16), command=foglalas_mentese)
+mentes_btn.grid(row=8, column=0, columnspan=11, pady=10)
 
 root.mainloop()
